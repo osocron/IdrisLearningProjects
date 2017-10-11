@@ -1,5 +1,8 @@
-module Main
+module Average
 
+||| Calculate the average length of words in a string.
+||| @str a string containing words separeted by whitespace.
+export
 average : (str: String) -> Double
 average str = let numWords = wordCount str
                   totalLength = sum (allLengths (words str)) in
