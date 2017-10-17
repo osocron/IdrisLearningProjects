@@ -1,11 +1,13 @@
 module Palindrome
 
 ||| Checks if the given string is a palindrome and has at least n length.
+export
 palindrome : Nat -> String -> Bool
 palindrome n str = length str > n &&
                    reverse (toLower str) == toLower str
 
 ||| Counts the number of words in a string and the length of the string.
+export
 counts :  String -> (Nat, Nat)
 counts str = (length $ words str, length str)
 
