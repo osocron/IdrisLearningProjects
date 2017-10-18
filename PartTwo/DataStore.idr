@@ -48,19 +48,20 @@ getEntry pos store = let storeItems = items store in
                               Nothing => Just ("Out of range\n", store)
                               (Just id) => Just (index id storeItems ++ "\n", store)
 
-mapIndeces : (store : DataStore) ->
+mapIndeces : (contents : Vect (size store) String) ->
              (xs : List (Fin (size store))) ->
-             List (String, DataStore)
-mapIndeces store xs = map (\pos => ((show (finToNat pos)) ++ ": " ++ (index pos (items store)), store)) xs
+             List String
+mapIndeces contents xs = map (\pos => (show (finToNat pos)) ++ ": " ++ (index pos contents)) xs
 
-reduce : List (String, DataStore) -> (String, DataStore)
-reduce xs = foldl (\(acc, old), (entry, store) => (acc ++ entry ++ "\n", store)) ("", MkData _ []) xs
+reduce : (store : DataStore) -> List String -> (String, DataStore)
+reduce store xs = foldl (\(acc, s), entry => (acc ++ entry ++ "\n", s)) ("", store) xs
 
 searchQuery : (query : String) ->
               (store : DataStore) ->
               Maybe (String, DataStore)
-searchQuery query store = let indices = findIndices (\str => isInfixOf query str) (items store) in
-                              Just (reduce (mapIndeces store indices))
+searchQuery query store = let contents = items store
+                              indices = findIndices (\str => isInfixOf query str) contents in
+                              Just (reduce store (mapIndeces contents indices))
 
 processInput : DataStore -> String -> Maybe (String, DataStore)
 processInput store inp = case parse inp of
