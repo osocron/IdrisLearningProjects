@@ -72,3 +72,4 @@ biggestTriangle : Picture -> Biggest
 biggestTriangle x = case (trianglesInPicture x) of
                           [] => NoTriangle
                           x :: xs => getBiggest xs x
+                  
